@@ -12,7 +12,7 @@ Clone dashboard-app
 Clone the dashboard-app repository using git:
 
 git clone https://github.com/haseeb4181/dashboard-app.git
-cd dashboard-app
+cd dashboard-app-master
 Install Dependencies
 We have two kinds of dependencies in this project: tools and Angular framework code. The tools help us manage and test the application.
 
