@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org/" ng-app="appMaps">
+
+<head>
+    <meta charset="utf-8" />
+    <title>DashBoard For NYC Bike Sharing</title>
+    <link rel="stylesheet" href="app.css" />
+    <!-- Angular Material style sheet -->
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+    <script data-require="angular.js@*" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+    <script src="http://rawgit.com/angular-ui/angular-google-maps/2.0.X/dist/angular-google-maps.js"></script>
+    <script src="components/ng-google-chart.js"></script>
+    <script src="components/hashmap.js"></script>
+
+    <script type='text/javascript' src='app.js'></script>
+    <script src="mainControllerTest.js"></script>
+
+    <!--script-->
+    <!--css-->
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+
+    <div ng-controller="mainCtrl as ctrl" id="main-page" flex class="height-100">
+        <md-content class="height-100 background-white">
+            <div layout="column">
+                <div class="heading-div" layout="row" layout-align="center center">
+                    <div id="Heading" class="heading">DashBoard For NYC Bike Sharing</div>
+                </div>
+                <div class="content-div">
+                    <div layout="row" flex>
+                        <div class="map-canvas">
+                            <ui-gmap-google-map ng-if="currentView=='1'" center="map.center" bounds='bounds' zoom="map.zoom" draggable="true" options="options">
+                                <ui-gmap-markers fit="true" models="markers" icon="'icon'" coords="'coords'">
+                                </ui-gmap-markers>
+                            </ui-gmap-google-map>
+                            <div google-chart ng-if="currentView=='2'" chart="myChartObject" style="height:600px"></div>
+                            <div google-chart ng-if="currentView=='3'" chart="myChartObject2" style="height:600px"></div>
+                        </div>
+                        <div class="adjust" flex="60"></div>
+                        <div id="options-div" layout="column" layout-align="center center" class="options-div" flex="40">
+                            <div class="width-100" layout="row" layout-align="end none">
+                                <md-button md-no-ink class="md-primary" ng-class="{'bold-text': (currentView=='1')}" ng-click="selectView('1')">MAP VIEW</md-button>
+                                <md-button md-no-ink class="md-primary" ng-class="{'bold-text':(currentView==='2')}" ng-click="selectView('2')">CURRENT USAGE</md-button>
+                                <md-button submit class="md-primary" ng-class="{'bold-text':(currentView=='3')}" ng-click="selectView('3')">HISTORY USAGE</md-button>
+
+                            </div>
+                            <form class="width-100 form" ng-submit="$event.preventDefault()" name="searchForm">
+                                <md-autocomplete name="stations" class="width-80" flex md-clear-button="true" required md-input-name="autocompleteField" md-input-minlength="2" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                    md-item-text="item.display" md-require-match md-floating-label="Select Station">
+                                    <md-item-template>
+                                        <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+                                    </md-item-template>
+                                    <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
+                                        <div ng-message="required">You <b>must</b> select a station.</div>
+                                        <div ng-message="md-require-match">Please select an existing station.</div>
+
+                                    </div>
+                                </md-autocomplete>
+
+                                <md-input-container ng-show="currentView=='1'" class="width-80" flex class="margin-top-70">
+                                    <label>Distance</label>
+                                    <input required name="distance" ng-model="distance">
+                                    <div ng-messages="projectForm.distance.$error">
+                                        <div ng-message="required">This is required.</div>
+                                    </div>
+                                </md-input-container>
+                                <div layout="row">
+                                    <md-button class="md-raised md-warn" ng-click="resetClicked()">RESET</md-button>
+                                    <md-button submit class="md-raised md-primary" ng-click="queryClicked()">QUERY</md-button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-content>
+    </div>
+
+</body>
+
+</html>
